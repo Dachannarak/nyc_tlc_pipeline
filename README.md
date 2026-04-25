@@ -212,9 +212,6 @@ docker compose down
 - [ ] เพิ่ม Data Lineage tracking (OpenLineage)
 
 ---
-ได้เลย! จากข้อมูลที่ดึงมาได้ ขอเพิ่ม Reference Section ให้กับ README ของคุณ:
-
----
 
 ## 📚 References & Data Source
 
