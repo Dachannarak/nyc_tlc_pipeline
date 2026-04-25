@@ -1,12 +1,16 @@
-🚕 NYC TLC Data Pipeline (Airflow)
-🔹 Overview
+# 🚕 NYC TLC Data Pipeline (Airflow)
 
-โปรเจคนี้คือ Data Pipeline สำหรับข้อมูล NYC TLC (Taxi & Limousine Commission)
-โดยใช้ Apache Airflow ควบคุมการทำงานแบบอัตโนมัติ
+## 📌 Overview
 
-👉 Pipeline นี้ออกแบบตาม Medallion Architecture (Bronze / Silver / Gold)
+This project implements a **batch data pipeline** for processing NYC Taxi & Limousine Commission (TLC) data using Apache Airflow.
 
-🧠 Workflow (ภาพรวมการไหลของข้อมูล)
+The pipeline follows a **Medallion Architecture (Bronze → Silver → Gold)** to ensure data quality, scalability, and reliability.
+
+---
+
+## 🧠 Architecture & Workflow
+
+```
 Data Source
    ↓
 Ingestion
@@ -20,68 +24,206 @@ Silver (Cleaned Data)
 Gold (Aggregated Data)
    ↓
 Serving (Dashboard / ML)
-🧱 Layer Architecture
-1️⃣ Data Source
-ข้อมูลจาก NYC Open Data API (TLC DSP)
-รูปแบบ: JSON / REST API
-อัปเดต: รายวัน (Batch)
-2️⃣ Ingestion Layer
-ดึงข้อมูลจาก API
-บันทึกลง Bronze
+```
+<img width="692" height="480" alt="image" src="https://github.com/user-attachments/assets/c6c0982e-85d3-4421-9335-2018b3e8f3aa" />
 
-📌 Tool:
+---
 
-PythonOperator
-3️⃣ Bronze Layer (Raw Data)
-เก็บข้อมูลดิบ (ยังไม่ clean)
-เก็บเป็น JSON
-มี metadata log
+## 🧱 Data Layers
 
-📁 ตัวอย่าง:
+### 1️⃣ Data Source
 
-data/bronze/nyc_tlc_dsp_raw.json
-4️⃣ Data Quality Layer ✅
+* NYC Open Data API (TLC DSP)
+* Format: JSON (REST API)
+* Update: Daily (Batch)
 
-ตรวจสอบคุณภาพข้อมูลก่อนใช้งาน
+---
 
-🔍 Checks:
-Null check
-Duplicate check
-Row count > 0
+### 2️⃣ Ingestion Layer
 
-📌 ถ้า fail → pipeline หยุด
-📌 ถ้า pass → ไป Silver
+* Fetch data from API
+* Store raw data into Bronze layer
 
-5️⃣ Silver Layer (Cleaned Data)
+---
 
-ทำความสะอาดข้อมูล
+### 3️⃣ Bronze Layer (Raw)
 
-🔧 Transform:
-ลบค่า null
-ลบ duplicate
-แปลง format วันที่
-จัดรูปแบบ text
+* Stores raw JSON data
+* No transformation applied
+* Includes metadata logging
 
-📁 Output:
+---
 
-data/silver/nyc_tlc_dsp_cleaned.json
-6️⃣ Gold Layer (Business Data)
+### 4️⃣ Data Quality Layer
 
-สร้างข้อมูลพร้อมใช้
+Data validation before processing:
 
-📊 Metrics:
-จำนวน provider ทั้งหมด
-จำนวน active provider
-status breakdown
+* Null check
+* Duplicate check
+* Row count validation
 
-👉 ใช้สำหรับ:
+If validation fails → pipeline stops
+If validation passes → continue to Silver
 
-Dashboard
-Analytics
-ML
-7️⃣ Serving Layer
+---
 
-นำข้อมูลไปใช้งาน
+### 5️⃣ Silver Layer (Cleaned)
 
-Dashboard (Metabase / Superset)
-Machine Learning
+Data transformation:
+
+* Remove null values
+* Remove duplicates
+* Standardize text format
+* Convert data types
+
+---
+
+### 6️⃣ Gold Layer (Business Ready)
+
+Aggregated metrics:
+
+* Total providers
+* Active providers
+* Status breakdown
+
+Used for:
+
+* Dashboard
+* Analytics
+* Machine Learning
+
+---
+
+### 7️⃣ Serving Layer
+
+* Dashboard (Metabase / Superset)
+* ML Models
+
+---
+
+## ⚙️ Airflow DAGs
+
+### 🔹 Main DAG
+
+```
+nyc_tlc_pipeline
+```
+
+### 🔁 Workflow
+
+```
+start
+ → ingestion
+ → quality_check
+ → silver
+ → gold
+end
+```
+
+---
+
+### 📂 Sub DAGs
+
+#### 1. ingestion
+
+* Fetch data from API
+* Save to Bronze
+
+#### 2. quality_check
+
+* Validate data
+* Branch (pass / fail)
+
+#### 3. silver
+
+* Clean & transform data
+
+#### 4. gold
+
+* Create aggregated metrics
+
+---
+
+## 🛠️ Tech Stack
+
+| Component     | Technology        |
+| ------------- | ----------------- |
+| Orchestration | Apache Airflow    |
+| Language      | Python 3          |
+| Container     | Docker            |
+| Database      | PostgreSQL        |
+| Queue         | Redis             |
+| Storage       | Local File System |
+
+---
+
+## 📁 Project Structure
+
+```
+nyc_tlc_pipeline/
+├── dags/
+│   ├── nyc_tlc_pipeline.py
+│   ├── nyc_tlc_ingestion.py
+│   ├── nyc_tlc_quality_check.py
+│   ├── nyc_tlc_silver.py
+│   └── nyc_tlc_gold.py
+├── docker-compose.yaml
+├── README.md
+```
+
+---
+
+## ▶️ How to Run
+
+### 1. Start Airflow
+
+```
+docker compose up -d
+```
+
+### 2. Open Airflow UI
+
+```
+http://localhost:8080
+```
+
+Login:
+
+* Username: airflow
+* Password: airflow
+
+---
+
+### 3. Run Pipeline
+
+* Enable DAG `nyc_tlc_pipeline`
+* Click **Trigger DAG**
+* Monitor execution in Graph view
+
+---
+
+## 🚀 Key Features
+
+* Batch Data Pipeline
+* Medallion Architecture (Bronze / Silver / Gold)
+* Data Quality Validation Layer
+* Apache Airflow Orchestration
+* End-to-End Data Workflow
+
+---
+
+## 🎯 Summary
+
+This project demonstrates how to design and implement a scalable data pipeline using Apache Airflow with proper data layering, validation, and transformation.
+
+---
+
+## 📌 Future Improvements
+
+* Add dashboard integration (Metabase / Superset)
+* Add alert system (Email / Slack)
+* Move storage to cloud (S3 / GCS)
+* Add ML model integration
+* Implement data lineage tracking
+
+---
