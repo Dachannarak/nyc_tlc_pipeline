@@ -25,7 +25,7 @@ Gold (Aggregated Data)
    ↓
 Serving (Dashboard / ML)
 ```
-<img width="692" height="480" alt="image" src="https://github.com/user-attachments/assets/b845b69b-41be-4429-b835-38f442084350" />
+<img width="1019" height="228" alt="image" src="https://github.com/user-attachments/assets/24bf88fa-647c-4fde-a13a-d81c6fc56f16" />
 
 ---
 
