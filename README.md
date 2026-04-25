@@ -11,11 +11,9 @@ Pipeline นี้ออกแบบตามแนวคิด **Medallion Arch
 ## 🧠 โครงสร้างการไหลของข้อมูล (Workflow)
 
 ```text
-Data Source
+Data Source (start)
    ↓
-Ingestion
-   ↓
-Bronze (Raw Data)
+Ingestion 
    ↓
 Data Quality Check
    ↓
@@ -23,7 +21,7 @@ Silver (Cleaned Data)
    ↓
 Gold (Aggregated Data)
    ↓
-Serving (Dashboard / ML)
+Serving (End)
 ```
 <img width="1019" height="228" alt="image" src="https://github.com/user-attachments/assets/24bf88fa-647c-4fde-a13a-d81c6fc56f16" />
 
