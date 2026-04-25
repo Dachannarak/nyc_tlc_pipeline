@@ -84,6 +84,9 @@ Serving (Dashboard / ML)
 - Machine Learning Model
 
 ---
+<img width="917" height="284" alt="image" src="https://github.com/user-attachments/assets/06fa2119-9d96-48af-a48f-00c6e323f4f1" />
+
+---
 
 ## ⚙️ Airflow DAG
 
