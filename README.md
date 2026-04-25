@@ -212,3 +212,58 @@ docker compose down
 - [ ] เพิ่ม Data Lineage tracking (OpenLineage)
 
 ---
+ได้เลย! จากข้อมูลที่ดึงมาได้ ขอเพิ่ม Reference Section ให้กับ README ของคุณ:
+
+---
+
+## 📚 References & Data Source
+
+### 🗃️ Primary Dataset
+
+| รายละเอียด | ข้อมูล |
+|---|---|
+| **ชื่อ Dataset** | NYC Taxi and Limousine Commission authorized Dispatch Service Providers (DSP) |
+| **แหล่งที่มา** | NYC Open Data |
+| **Dataset ID** | `2n4x-d97d` |
+| **URL** | https://data.cityofnewyork.us/Transportation/NYC-Taxi-and-Limousine-Commission-authorized-Dispa/2n4x-d97d |
+| **API Endpoint** | `https://data.cityofnewyork.us/resource/2n4x-d97d.json` |
+| **Format** | JSON (REST API via Socrata SODA) |
+| **License** | [NYC Open Data Terms of Use](https://opendata.cityofnewyork.us/overview/#termsofuse) |
+| **Publisher** | NYC Taxi and Limousine Commission (TLC) |
+| **Update Frequency** | อัปเดตรายวัน |
+
+### 📖 คำอธิบาย Dataset
+
+Dispatch Service Provider (DSP) คือผู้ให้บริการที่ได้รับอนุญาตในการ dispatch trips แทน FHV (For-Hire-Vehicle) Base โดย สามารถเข้าถึงข้อมูลผ่าน Socrata Open Data API (SODA) ซึ่งรองรับการ filter, query และ aggregate ข้อมูล และยังรองรับ OData สำหรับเชื่อมต่อกับ Excel หรือ Tableau ได้โดยตรง
+
+### 🔗 API Reference
+
+```
+# ดึงข้อมูลทั้งหมด
+GET https://data.cityofnewyork.us/resource/2n4x-d97d.json
+
+# จำกัดจำนวน records
+GET https://data.cityofnewyork.us/resource/2n4x-d97d.json?$limit=1000
+
+# กรองตาม status (ตัวอย่าง)
+GET https://data.cityofnewyork.us/resource/2n4x-d97d.json?status=Active
+```
+
+### 📦 Related Datasets (NYC TLC)
+
+| Dataset | คำอธิบาย |
+|---|---|
+| [FHV Trip Records](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) | ข้อมูล trip records ของ FHV รวมถึง dispatching base license number, pickup date/time และ taxi zone location |
+| [TLC Authorized FHV](https://catalog.data.gov/dataset?organization=city-of-new-york&tags=taxi) | รายชื่อ TLC authorized For-Hire vehicles ที่ active อยู่ในปัจจุบัน |
+
+### 🛠️ Tools & Technologies References
+
+| เทคโนโลยี | Official Docs |
+|---|---|
+| Apache Airflow 2.9.1 | https://airflow.apache.org/docs/ |
+| Docker Compose | https://docs.docker.com/compose/ |
+| Socrata SODA API | https://dev.socrata.com/docs/endpoints.html |
+| NYC Open Data | https://opendata.cityofnewyork.us/ |
+
+---
+
